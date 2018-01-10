@@ -4,7 +4,10 @@
 
 ## Setup
 
+
 ## Features
+
+See [docs.md](/docs.md)
 
 ## License (MIT)
 

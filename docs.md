@@ -10,5 +10,9 @@
  A. `C:\Users\Alice\Documents\Codes\OpenSource\Project\README.md`
  B. `https://filestore.cloud.example/#!/Alice/`
 
-Process: Searching backwards through both paths, find first common chunk, then take the remainder of the source path and integrate it into the destination path
+Process: Searching backwards through both paths, find first common chunk, then take the remainder of the source path and integrate it into the destination path. All separators are made to conform to the destination path (B).
+
+Result: `https://filestore.cloud.example/#!/Alice/Documents/Codes/OpenSource/Project/README.md`
+
+Test examples:
 
