@@ -8,9 +8,13 @@ namespace VillageSoftware.PathMatcher
 {
     public class PathInfo
     {
-        public string FilePath { get; set; }
-        public IEnumerable<string> Chunks { get; set; }
-        public char Separator { get; set; }
+        public string FilePath { get; private set; }
+        public IEnumerable<string> Chunks { get; private set; }
+        public char Separator { get; private set; }
+        public string FileDirectoryOnly { get; private set; }
+        public string FileNameOnly { get; private set; }
+        public bool IsUrl { get; private set; }
+        private Uri _url;
 
         public PathInfo(string path)
         {
@@ -19,9 +23,75 @@ namespace VillageSoftware.PathMatcher
 
         private void RebuildUsing(string path)
         {
+            //Set the basics
             FilePath = path;
             Separator = MostCommonSeparatorIn(path);
             Chunks = Chunk(path);
+
+            //Decide whether it's a URL or local
+            IsUrl = false;
+            if (FilePath.Contains("//"))
+            {
+                try
+                {
+                    _url = new Uri(FilePath);
+                    IsUrl = true;
+                }
+                catch (Exception)
+                {
+                    IsUrl = false;
+                }
+            }
+
+            //Set the DirectoryOnly and FileNameOnly bits
+            if (IsUrl)
+            {
+                //If the fragment contains directory separators, we should consider it part of the path
+                var totalUrlPath = _url.Fragment.Contains(Separator)
+                    ? _url.AbsolutePath + _url.Fragment
+                    : _url.AbsolutePath;
+
+                var urlDirectory = Path.GetDirectoryName(totalUrlPath);
+                urlDirectory = ConformAllSeparatorsTo(urlDirectory, Separator);
+                FileDirectoryOnly = UrlRoot + urlDirectory;
+                if (_url.IsFile)
+                {
+                    FileNameOnly = Path.GetFileName(_url.LocalPath);
+                }
+                else
+                {
+                    FileNameOnly = "";
+                }
+            }
+            else
+            {
+                FileDirectoryOnly = Path.GetDirectoryName(FilePath);
+                FileNameOnly = Path.GetFileName(FilePath);
+            }
+        }
+
+        private string UrlRoot
+        {
+            get
+            {
+                return _url.Scheme + "://" + _url.Authority;
+            }
+        }
+
+        public string GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator)
+        {
+            if (path.EndsWith(Separator.ToString()))
+            {
+                return showFinalSeparator
+                    ? path
+                    : path.Substring(0, path.Length - 1);
+            }
+            else
+            {
+                return showFinalSeparator
+                    ? path + Separator
+                    : path;
+            }
         }
 
         private List<string> Chunk(string path)
@@ -69,5 +139,18 @@ namespace VillageSoftware.PathMatcher
             var newPath = FilePath.Replace(Separator, separator);
             RebuildUsing(newPath);
         }
+
+        private string ConformAllSeparatorsTo(string path, char newSeparator)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return "";
+            }
+
+            var commonSep = MostCommonSeparatorIn(path);
+            path = path.Replace(commonSep, newSeparator);
+            return path;
+        }
+
     }
 }
