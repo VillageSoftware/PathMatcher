@@ -78,6 +78,12 @@ namespace VillageSoftware.PathMatcher
             }
         }
 
+        /// <summary>
+        /// Ensure that the passed path either has or does not have a trailing separator
+        /// </summary>
+        /// <param name="path">The path to work on</param>
+        /// <param name="showFinalSeparator">True to add the trailing separator if not present, False to remove the trailing separator if present. Otherwise method does leaves original path as-is.</param>
+        /// <returns>The corrected path string</returns>
         public string GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator)
         {
             if (path.EndsWith(Separator.ToString()))
@@ -113,6 +119,11 @@ namespace VillageSoftware.PathMatcher
             return Path.AltDirectorySeparatorChar;
         }
 
+        /// <summary>
+        /// Return the section of this path which appears after the specified chunk
+        /// </summary>
+        /// <param name="chunk">A string segment which appears between two directory separators in this path</param>
+        /// <returns>The resulting remainder of the path</returns>
         public string PathAfterChunk(string chunk)
         {
             var startIndex = FilePath.IndexOf(chunk);
@@ -124,6 +135,11 @@ namespace VillageSoftware.PathMatcher
             return FilePath.Substring(endIndex);
         }
 
+        /// <summary>
+        /// Return the section of this path which appears before the specified chunk
+        /// </summary>
+        /// <param name="chunk">A string segment which appears between two directory separators in this path</param>
+        /// <returns>The resulting section of path</returns>
         public string PathBeforeChunk(string chunk)
         {
             var startIndex = FilePath.IndexOf(chunk);
@@ -134,6 +150,10 @@ namespace VillageSoftware.PathMatcher
             return FilePath.Substring(0, startIndex);
         }
 
+        /// <summary>
+        /// Change the separators on this PathInfo object to the specified separator and rebuild all of the PathInfo fields
+        /// </summary>
+        /// <param name="separator">The new separator to use</param>
         public void ConformSeparatorTo(char separator)
         {
             var newPath = FilePath.Replace(Separator, separator);
