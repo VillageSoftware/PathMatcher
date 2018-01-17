@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>VillageSoftware.PathMatcher</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Stephen Griffiths</authors>
     <owners>Village Software</owners>
     <licenseUrl>https://github.com/VillageSoftware/PathMatcher/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/VillageSoftware/PathMatcher</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools which go beyond System.IO.Path to help to integrate local and cloud paths</description>
-    <releaseNotes>Initial version</releaseNotes>
-    <copyright>Village Software 2018</copyright>
+    <releaseNotes>New feature to safely add path chunks</releaseNotes>
+    <copyright>Copyright Village Software 2018</copyright>
     <tags>Path Directory OneDrive</tags>
   </metadata>
   <files>

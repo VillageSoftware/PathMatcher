@@ -14,6 +14,8 @@ namespace VillageSoftware.PathMatcher
         public string FileDirectoryOnly { get; private set; }
         public string FileNameOnly { get; private set; }
         public bool IsUrl { get; private set; }
+        public bool HasTerminatingSeparator { get; private set; }
+
         private Uri _url;
 
         public PathInfo(string path)
@@ -26,6 +28,7 @@ namespace VillageSoftware.PathMatcher
             //Set the basics
             FilePath = path;
             Separator = MostCommonSeparatorIn(path);
+            HasTerminatingSeparator = HasFinalSeparator(FilePath, Separator);
             Chunks = Chunk(path);
 
             //Decide whether it's a URL or local
@@ -84,6 +87,11 @@ namespace VillageSoftware.PathMatcher
             }
         }
 
+        private static bool HasFinalSeparator(string path, char separator)
+        {
+            return path.EndsWith(separator.ToString());
+        }
+
         /// <summary>
         /// Ensure that the passed path either has or does not have a trailing separator, using the default Separator for this instance of PathInfo
         /// </summary>
@@ -92,7 +100,7 @@ namespace VillageSoftware.PathMatcher
         /// <returns>The corrected path string</returns>
         public string GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator)
         {
-            if (path.EndsWith(Separator.ToString()))
+            if (HasFinalSeparator(path, Separator))
             {
                 return showFinalSeparator
                     ? path
@@ -115,7 +123,7 @@ namespace VillageSoftware.PathMatcher
         /// <returns>The corrected path string</returns>
         public static string GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator, char separator = '\\')
         {
-            if (path.EndsWith(separator.ToString()))
+            if (HasFinalSeparator(path, separator))
             {
                 return showFinalSeparator
                     ? path
@@ -209,6 +217,27 @@ namespace VillageSoftware.PathMatcher
             var commonSep = MostCommonSeparatorIn(path);
             path = path.Replace(commonSep, newSeparator);
             return path;
+        }
+
+        /// <summary>
+        /// Safely add the specified segments to the path of this PathInfo instance, using the correct separator and an optional terminating separator
+        /// </summary>
+        /// <param name="addTerminatingSeparator">True to include a terminating (trailing) separator</param>
+        /// <param name="chunks">The path segments which you want to add to this PathInfo</param>
+        public void AddChunks(bool addTerminatingSeparator, params string[] chunks)
+        {
+            var basis = GetPathWithFinalSeparatorOnOff(FilePath, false);
+            foreach (var chunk in chunks)
+            {
+                basis += Separator + chunk;
+            }
+
+            if (addTerminatingSeparator)
+            {
+                basis += Separator;
+            }
+
+            RebuildUsing(basis);
         }
 
     }
