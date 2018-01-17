@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillageSoftware.PathMatcher", "VillageSoftware.PathMatcher\VillageSoftware.PathMatcher.csproj", "{F5DDA7E3-2132-47A0-A38D-7B79BE4D1751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VillageSoftware.PathMatcher", "VillageSoftware.PathMatcher\VillageSoftware.PathMatcher.csproj", "{F5DDA7E3-2132-47A0-A38D-7B79BE4D1751}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillageSoftware.PathMatcher.Tests", "VillageSoftware.PathMatcher.Tests\VillageSoftware.PathMatcher.Tests.csproj", "{64B9F41B-9967-4495-8011-3E950F9CDAE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VillageSoftware.PathMatcher.Tests", "VillageSoftware.PathMatcher.Tests\VillageSoftware.PathMatcher.Tests.csproj", "{64B9F41B-9967-4495-8011-3E950F9CDAE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillageSoftware.PathMatcher-NetFx45", "VillageSoftware.PathMatcher-NetFx45\VillageSoftware.PathMatcher-NetFx45.csproj", "{4F2268FF-0189-4AF5-971E-497FC0032638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{64B9F41B-9967-4495-8011-3E950F9CDAE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64B9F41B-9967-4495-8011-3E950F9CDAE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64B9F41B-9967-4495-8011-3E950F9CDAE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F2268FF-0189-4AF5-971E-497FC0032638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F2268FF-0189-4AF5-971E-497FC0032638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F2268FF-0189-4AF5-971E-497FC0032638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F2268FF-0189-4AF5-971E-497FC0032638}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

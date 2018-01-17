@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>VillageSoftware.PathMatcher</id>
+    <version>1.0.0</version>
+    <authors>Stephen Griffiths</authors>
+    <owners>Village Software</owners>
+    <licenseUrl>https://github.com/VillageSoftware/PathMatcher/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/VillageSoftware/PathMatcher</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Tools which go beyond System.IO.Path to help to integrate local and cloud paths</description>
+    <releaseNotes>Initial version</releaseNotes>
+    <copyright>Village Software 2018</copyright>
+    <tags>Path Directory OneDrive</tags>
+  </metadata>
+  <files>
+    <file src="VillageSoftware.PathMatcher-NetFx45\bin\Release\VillageSoftware.PathMatcher-NetFx45.dll" target="lib\net45\VillageSoftware.PathMatcher.dll" />
+    <file src="VillageSoftware.PathMatcher\bin\Release\netstandard1.3\VillageSoftware.PathMatcher.dll" target="lib\netstandard1.3\VillageSoftware.PathMatcher.dll" />
+  </files>
+</package>
