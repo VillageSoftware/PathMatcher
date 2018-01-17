@@ -9,6 +9,18 @@ namespace VillageSoftware.PathMatcher.Tests
     public class PathInfo_FinalSeparatorTests
     {
         [TestMethod]
+        public void GetPathWithFinalSeparatorOnOff_InstantiatedOnEmpty_UsesSystemDefault()
+        {
+            var path = "files";
+            var pathInfo = new PathInfo("");
+            
+            string expected = "files\\";
+            var actual = pathInfo.GetPathWithFinalSeparatorOnOff(path, true);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void GetPathWithFinalSeparatorOnOff_NotPresent_WantIt()
         {
             var path = @"C:\files";
@@ -67,6 +79,26 @@ namespace VillageSoftware.PathMatcher.Tests
 
             var expected = @"C:/files/";
             var actual = pathInfo.GetPathWithFinalSeparatorOnOff(path, true);
+
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [TestMethod]
+        public void GetPathWithFinalSeparatorOnOff_Static()
+        {
+            var path = @"C:/files";
+            var expected = @"C:/files/";
+            var actual = PathInfo.GetPathWithFinalSeparatorOnOff(path, true, '/');
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetPathWithFinalSeparatorOnOff_Static_UsePassedSeparator()
+        {
+            var path = @"C:/files";
+            var expected = @"C:/files-";
+            var actual = PathInfo.GetPathWithFinalSeparatorOnOff(path, true, '-');
 
             Assert.AreEqual(expected, actual);
         }

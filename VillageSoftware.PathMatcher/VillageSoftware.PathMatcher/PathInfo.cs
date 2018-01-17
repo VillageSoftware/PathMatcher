@@ -43,11 +43,17 @@ namespace VillageSoftware.PathMatcher
                 }
             }
 
+            //Stop further processing if path is empty
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
             //Set the DirectoryOnly and FileNameOnly bits
             if (IsUrl)
             {
                 //If the fragment contains directory separators, we should consider it part of the path
-                var totalUrlPath = _url.Fragment.Contains(Separator)
+                var totalUrlPath = _url.Fragment.Contains(Separator.ToString())
                     ? _url.AbsolutePath + _url.Fragment
                     : _url.AbsolutePath;
 
@@ -79,7 +85,7 @@ namespace VillageSoftware.PathMatcher
         }
 
         /// <summary>
-        /// Ensure that the passed path either has or does not have a trailing separator
+        /// Ensure that the passed path either has or does not have a trailing separator, using the default Separator for this instance of PathInfo
         /// </summary>
         /// <param name="path">The path to work on</param>
         /// <param name="showFinalSeparator">True to add the trailing separator if not present, False to remove the trailing separator if present. Otherwise method does leaves original path as-is.</param>
@@ -100,14 +106,47 @@ namespace VillageSoftware.PathMatcher
             }
         }
 
+        /// <summary>
+        /// Ensure that the passed path either has or does not have a trailing separator, using the passed separator
+        /// </summary>
+        /// <param name="path">The path to work on</param>
+        /// <param name="showFinalSeparator">True to add the trailing separator if not present, False to remove the trailing separator if present. Otherwise method does leaves original path as-is.</param>
+        /// <param name="separator">Specifies the separator character to use.</param>
+        /// <returns>The corrected path string</returns>
+        public static string GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator, char separator = '\\')
+        {
+            if (path.EndsWith(separator.ToString()))
+            {
+                return showFinalSeparator
+                    ? path
+                    : path.Substring(0, path.Length - 1);
+            }
+            else
+            {
+                return showFinalSeparator
+                    ? path + separator
+                    : path;
+            }
+        }
+
         private List<string> Chunk(string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                return new List<string>();
+            }
+
             var theChunks = path.Split(Separator).ToList();
             return theChunks;
         }
 
         private char MostCommonSeparatorIn(string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                return Path.DirectorySeparatorChar;
+            }
+
             var pathCharArray = path.ToCharArray();
             var countOfDefaultSeparator = pathCharArray.Count(c => c == Path.DirectorySeparatorChar);
             var countOfAltSeparator = pathCharArray.Count(c => c == Path.AltDirectorySeparatorChar);
