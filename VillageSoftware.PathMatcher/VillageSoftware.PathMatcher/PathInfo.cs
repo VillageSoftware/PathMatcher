@@ -240,5 +240,17 @@ namespace VillageSoftware.PathMatcher
             RebuildUsing(basis);
         }
 
+        /// <summary>
+        /// Set the file name of this PathInfo to the filename found in the supplied parameter
+        /// </summary>
+        /// <param name="fileName">A filename or a path containing a filename to use to modify this PathInfo</param>
+        public void SetFileName(string fileName)
+        {
+            var newPath = GetPathWithFinalSeparatorOnOff(FileDirectoryOnly, true);
+            var newFileNameInfo = new PathInfo(fileName);
+            newPath += newFileNameInfo.FileNameOnly;
+            RebuildUsing(newPath);
+        }
+
     }
 }
