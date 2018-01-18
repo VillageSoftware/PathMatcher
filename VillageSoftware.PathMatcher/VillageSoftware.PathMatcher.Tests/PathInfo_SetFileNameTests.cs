@@ -7,7 +7,7 @@ using System.Text;
 namespace VillageSoftware.PathMatcher.Tests
 {
     [TestClass]
-    class PathInfo_SetFileNameTests
+    public class PathInfo_SetFileNameTests
     {
         [TestMethod]
         public void SetFileName_LocalPath()
@@ -36,7 +36,21 @@ namespace VillageSoftware.PathMatcher.Tests
 
             Assert.AreEqual(expected, actual);
         }
-        
+
+        [TestMethod]
+        public void SetFileName_BlankToRemoveFileName()
+        {
+            var originalPath = @"C:\Files\MyFile.txt";
+            var target = new PathInfo(originalPath);
+
+            target.SetFileName("");
+
+            var expected = @"C:\Files\";
+            var actual = target.FilePath;
+
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestMethod]
         public void AddChunkAnd_SetFileName_LocalPath()
         {
@@ -76,13 +90,37 @@ namespace VillageSoftware.PathMatcher.Tests
 
             //False, to "forget" to add intermediate separator
             target.AddChunks(false, "User");
-            target.SetFileName("MyImage.png");
+            // It's now "https://files.example/User" which does not "appear" to be a directory, but a file
 
-            //Result should have all relevant Seps
-            var expected = @"https://files.example/User/MyImage.png";
+            // "MyImage.png" will overwrite "User"
+            target.SetFileName("MyImage.png");
+            
+            var expected = @"https://files.example/MyImage.png";
             var actual = target.FilePath;
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ExampleUsageForReadme()
+        {
+            string myPath = @"C:\Users\Coder\Documents\Code\Project\File.cs";
+            var pathInfo = new PathInfo(myPath);
+            pathInfo.ConformSeparatorTo('/');
+
+            //Remove the filename (strip it back to directory only)
+            pathInfo.SetFileName("");
+
+            pathInfo.AddChunks(true, "src", "Controllers");
+            pathInfo.SetFileName("FileNameController.cs");
+
+            Assert.AreEqual(@"C:\Users\Coder\Documents\Code\Project\src\Controllers\FileNameController.cs", pathInfo.FilePath);
+
+            string remotePath = "https://files.example/Coder/Documents/";
+            string newPath = PathMatcher.Resituate(pathInfo.FilePath, remotePath);
+
+            string expected = "https://files.example/Coder/Documents/Code/Project/src/Controllers/FileNameController.cs";
+            Assert.AreEqual(expected, newPath);
         }
     }
 }

@@ -6,7 +6,13 @@ In principle, importing this module should keep you from doing work that's alrea
 
 ## Setup
 
-This will be a NuGet package but it's not available yet. To try out PathMatcher, please clone and build the repo in Visual Studio.
+In NuGet Package Manager:
+
+	Install-Package VillageSoftware.PathMatcher
+	
+Or see [VillageSoftware.PathMatcher on nuget.org][nuget]
+
+[nuget]: https://www.nuget.org/packages/VillageSoftware.PathMatcher/
 
 ## Features
 
@@ -16,24 +22,44 @@ The PathInfo class is instantiated on a path string and exposes a load of helpfu
 
 **Properties:**
 
- * `pathInfo.FileDirectoryOnly` - Exposes the directory (without the file)
- * `pathInfo.FileNameOnly` - Exposes the file (without the directory)
- * `pathInfo.Chunks` - Exposes the path as a List of chunks
- * `pathInfo.Separator` - Exposes what was deemed to be the predominant separator in the path
- * `pathInfo.IsUrl` - Exposes a calculated result of whether the path was a URL
-
+ * `pathInfo.FilePath` - The path
+ * `pathInfo.FileDirectoryOnly` - The directory (without the file)
+ * `pathInfo.FileNameOnly` - The file name (without the directory)
+ * `pathInfo.Chunks` - FilePath as a List of chunks (segments)
+ * `pathInfo.Separator` - The (calculated) predominant separator in the path
+ * `pathInfo.IsUrl` - True if FilePath is considered to be a URL
+ * `pathInfo.HasTerminatingSeparator` - True if FilePath currently has a terminating separator
+ 
 **Methods:**
 
- * `GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator)` - Ensure that the passed path either has or does not have a trailing separator
- * `PathAfterChunk(string chunk)` and `PathBeforeChunk` - Return the reamining section of this path which appears after/before the specified chunk (a.k.a segment)
+ * `GetPathWithFinalSeparatorOnOff(string path, bool showFinalSeparator)` - Ensure that the passed path either has or does not have a trailing separator (using the predominant Separator)
+ * `PathBeforeChunk(string chunk)` and `PathAfterChunk` - Return the reamining section of FilePath which appears before/after the specified chunk (segment)
  * `ConformSeparatorTo(char separator)` - Change the separators on this PathInfo object to the specified separator and rebuild all of the PathInfo fields (this is useful for merging together local `\` paths and remote `/` paths)
-
+ * `AddChunks(bool addTerminatingSeparator, params string[] chunks)` - Lengthen the path safely, automatically inserting the predominant separator between your new specified chunks. Optionally add a terminating separator.
+ * `SetFileName(string FileName)` - Set the file name of this PathInfo to the filename found in the supplied parameter (or pass `""` to remove the filename from FilePath altogether)
+  
 **Example Usage:**
 
 	string myPath = @"C:\Users\Coder\Documents\Code\Project\File.cs";
 	var pathInfo = new PathInfo(myPath);
+	
+	//We can flip all the separators if we want
 	pathInfo.ConformSeparatorTo('/');
-	var finalPath = pathInfo.GetPathWithFinalSeparatorOnOff(pathInfo.FilePath, true);
+
+	//Remove the filename (strip it back to directory only)
+	pathInfo.SetFileName("");
+
+	pathInfo.AddChunks(true, "src", "Controllers");
+	pathInfo.SetFileName("FileNameController.cs");
+
+	// Value of pathInfo.FilePath is now 
+	// "C:\Users\Coder\Documents\Code\Project\src\Controllers\FileNameController.cs"
+
+	string remotePath = "https://files.example/Coder/Documents/";
+	string newPath = PathMatcher.Resituate(pathInfo.FilePath, remotePath);
+
+	// After "resituating" into remotePath, value of newPath is
+	// "https://files.example/Coder/Documents/Code/Project/src/Controllers/FileNameController.cs";
 
 ### PathMatcher
 
