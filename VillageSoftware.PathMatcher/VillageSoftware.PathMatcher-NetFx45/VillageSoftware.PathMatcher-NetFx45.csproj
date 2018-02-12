@@ -7,8 +7,8 @@
     <ProjectGuid>{4F2268FF-0189-4AF5-971E-497FC0032638}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VillageSoftware.PathMatcher_NetFx45</RootNamespace>
-    <AssemblyName>VillageSoftware.PathMatcher-NetFx45</AssemblyName>
+    <RootNamespace>VillageSoftware.PathMatcher</RootNamespace>
+    <AssemblyName>VillageSoftware.PathMatcher</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
